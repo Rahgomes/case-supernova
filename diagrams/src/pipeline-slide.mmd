@@ -1,0 +1,8 @@
+flowchart LR
+    A[Commit] --> B[CI: lint, testes,<br/>cobertura, scans, build]
+    B --> C[Merge<br/>develop]
+    C --> D[Deploy<br/>Homologação]
+    D --> E[E2E +<br/>Aprovação]
+    E --> F[Deploy Produção<br/>blue-green]
+    F --> G[Health check<br/>+ métricas]
+    G -. rollback .-> F

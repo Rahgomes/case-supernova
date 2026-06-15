@@ -1,0 +1,2 @@
+flowchart LR
+    A[WAF /<br/>Rate limit] --> B[TLS 1.3<br/>HTTPS] --> C[AuthN:<br/>JWT/OIDC/MFA] --> D[AuthZ:<br/>RBAC/RLS] --> E[Validação<br/>de input] --> F[ORM<br/>parametrizado] --> G[Cripto<br/>AES-256] --> H[Auditoria<br/>+ LGPD]

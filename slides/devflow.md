@@ -6,13 +6,16 @@ backgroundColor: #fff
 color: #1a1a2e
 style: |
   section { font-size: 26px; }
-  h1 { color: #5b2a86; }
-  h2 { color: #5b2a86; }
+  h1, h2 { color: #5b2a86; }
   section.lead h1 { font-size: 54px; }
-  table { font-size: 20px; }
-  code { font-size: 20px; }
-  img { background: transparent; }
-  footer { color: #888; }
+  table { font-size: 21px; }
+  code { font-size: 19px; }
+  /* Slides de diagrama: imagem limitada pela ALTURA, nunca vaza */
+  section.diag { display: flex; flex-direction: column; padding: 30px 46px 24px; }
+  section.diag h1 { font-size: 30px; margin: 0 0 6px; }
+  section.diag p { flex: 1 1 auto; min-height: 0; margin: 0; display: flex; align-items: center; justify-content: center; }
+  section.diag img { max-height: 100%; max-width: 100%; }
+  footer { color: #999; }
 footer: "DevFlow — Portal de Gestão de Demandas de TI"
 ---
 
@@ -31,11 +34,11 @@ Concepção da solução — arquitetura, dados, governança, DevOps, segurança
 
 As demandas internas de TI chegam por **WhatsApp e e-mail**, sem controle:
 
-- ❌ Sem backlog estruturado
-- ❌ Sem priorização formal
-- ❌ Sem SLA
-- ❌ Sem histórico de mudanças
-- ❌ Sem rastreabilidade das entregas
+- Sem backlog estruturado
+- Sem priorização formal
+- Sem SLA
+- Sem histórico de mudanças
+- Sem rastreabilidade das entregas
 
 **Objetivo:** um portal onde as áreas (Comercial, Atendimento, Financeiro, Marketing, Jurídico,
 Operações) abrem solicitações para TI e acompanham todo o ciclo — com governança e métricas.
@@ -49,15 +52,15 @@ Operações) abrem solicitações para TI e acompanham todo o ciclo — com gove
 | Camada | Escolha |
 |---|---|
 | Front-end | **Next.js 15** (React, SSR/RSC) |
-| Back-end | **NestJS** (Node/TS) — monólito modular por bounded context |
+| Back-end | **NestJS** — monólito modular por bounded context |
 | Dados | **PostgreSQL 16** + **Redis** (cache/fila) |
 | Assíncrono | **BullMQ** (notificações, SLA, intake) |
-| Inteligência | **WhatsApp Business API** + **LLM** (classifica/prioriza no intake) |
+| Inteligência | **WhatsApp Business API** + **LLM** (classifica/prioriza) |
 | Infra | **Docker**, cloud, CI/CD com quality gates |
 
 ---
 
-# 1. Requisitos funcionais (MoSCoW)
+# 1. Requisitos funcionais
 
 - **Identidade:** usuários, departamentos, perfis (**RBAC**), SSO
 - **Demanda:** abertura, **workflow configurável**, **backlog**, **priorização** (impacto × urgência)
@@ -72,7 +75,7 @@ Operações) abrem solicitações para TI e acompanham todo o ciclo — com gove
 
 | Categoria | Alvo |
 |---|---|
-| Performance | p95 API < 300ms |
+| Performance | p95 da API < 300ms |
 | Escalabilidade | 100 → 50.000 usuários sem reescrita |
 | Disponibilidade | 99,9% uptime |
 | Segurança | TLS 1.3 + AES-256 |
@@ -91,15 +94,19 @@ Operações) abrem solicitações para TI e acompanham todo o ciclo — com gove
 
 ---
 
+<!-- _class: diag -->
+
 # 2. C4 — Contexto
 
-![w:1000](../diagrams/img/c4-context.png)
+![](../diagrams/img/c4-context.png)
 
 ---
 
+<!-- _class: diag -->
+
 # 2. C4 — Container
 
-![w:880](../diagrams/img/c4-container.png)
+![](../diagrams/img/c4-container.png)
 
 ---
 
@@ -117,11 +124,11 @@ Cada módulo é isolado e comunica-se por interfaces/eventos. Um módulo que pre
 
 ---
 
+<!-- _class: diag -->
+
 # 2. Intake inteligente
 
-![w:1000](../diagrams/img/intake.png)
-
-Demandas que hoje chegam informais no WhatsApp entram **estruturadas**: a IA classifica e prioriza.
+![](../diagrams/img/intake.png)
 
 ---
 
@@ -134,9 +141,11 @@ Demandas que hoje chegam informais no WhatsApp entram **estruturadas**: a IA cla
 
 ---
 
+<!-- _class: diag -->
+
 # 3. Modelo de dados
 
-![w:980](../diagrams/img/er-model.png)
+![](../diagrams/img/er-model.png)
 
 ---
 
@@ -152,12 +161,11 @@ JSONB para flexibilidade, anexos em S3, outbox para consistência de eventos.
 
 ---
 
+<!-- _class: diag -->
+
 # 4. Governança — GitFlow
 
-![w:780](../diagrams/img/gitflow.png)
-
-`main` (prod) · `develop` (integração) · `feature/*` · `release/*` · `hotfix/*`
-Conventional Commits → SemVer + changelog automático.
+![](../diagrams/img/gitflow.png)
 
 ---
 
@@ -177,35 +185,45 @@ Controller fino · DTO valida na borda · DI (testável) · domínio rico · efe
 
 ---
 
+<!-- _class: diag -->
+
 # 5. DevOps — esteira CI/CD
 
-![w:560](../diagrams/img/pipeline-cicd.png)
+![](../diagrams/img/pipeline-slide.png)
 
-Commit → testes → **scans (SAST/SCA/secrets/imagem)** → build → homolog → E2E → blue-green → rollback.
+---
+
+<!-- _class: diag -->
+
+# 6. Segurança em camadas
+
+![](../diagrams/img/seguranca-slide.png)
 
 ---
 
 # 6. Segurança e LGPD
 
-![w:520](../diagrams/img/seguranca-camadas.png)
-
-JWT+OIDC+MFA · RBAC+RLS · TLS+AES-256 · auditoria append-only · **LGPD: anonimização, log de PII, retenção**.
+- **AuthN:** JWT + Refresh + **SSO OIDC** + MFA para perfis privilegiados
+- **AuthZ:** RBAC com guards + Row-Level Security
+- **Cripto:** TLS 1.3 (trânsito) + AES-256 (repouso) + Argon2id (senhas)
+- **Auditoria:** trilha append-only e imutável
+- **LGPD:** minimização, **anonimização** (preserva auditoria), log de acesso a PII, retenção
 
 ---
+
+<!-- _class: diag -->
 
 # 7. Escalabilidade — por estágios
 
-![w:1050](../diagrams/img/escala.png)
-
-Escala guiada por métricas, não por antecipação. Microserviço só quando um contexto exigir.
+![](../diagrams/img/escala.png)
 
 ---
 
+<!-- _class: diag -->
+
 # 7. Roadmap evolutivo
 
-![w:1050](../diagrams/img/roadmap.png)
-
-MVP em 4–6 semanas resolve a dor central; cada fase agrega **sem reescrever** a anterior.
+![](../diagrams/img/roadmap.png)
 
 ---
 
