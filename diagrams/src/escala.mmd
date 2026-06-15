@@ -1,0 +1,8 @@
+flowchart LR
+    E1["Estágio 1<br/>100-1k usuários<br/>Monólito modular<br/>1 instância + Postgres"]
+    E2["Estágio 2<br/>1k-10k<br/>Scale horizontal<br/>N instâncias + LB + cache"]
+    E3["Estágio 3<br/>10k-50k<br/>Read replicas + CDN<br/>filas robustas"]
+    E4["Estágio 4<br/>50k+<br/>Microserviços por<br/>bounded context"]
+    E1 -->|"CPU 70pct+"| E2
+    E2 -->|"p95 sobe"| E3
+    E3 -->|"contexto escala diferente"| E4

@@ -1,0 +1,30 @@
+@startuml DevFlow-C4-Container
+!include <C4/C4_Container>
+title DevFlow — Diagrama de Container (C4 Nível 2)
+
+Person(user, "Usuário", "Solicitante / TI / Admin")
+System_Ext(whatsapp, "WhatsApp Business API", "Meta")
+System_Ext(llm, "LLM Provider", "IA")
+System_Ext(idp, "Identity Provider", "OIDC")
+
+System_Boundary(devflow, "DevFlow") {
+    Container(spa, "Front-End", "Next.js 15 / React", "UI SSR + RSC, responsiva")
+    Container(api, "API / BFF", "NestJS (Node/TS)", "Monólito modular por bounded context")
+    Container(worker, "Workers", "NestJS + BullMQ", "Notificações, SLA, intake IA")
+    ContainerDb(pg, "PostgreSQL 16", "RDBMS", "Demandas, usuários, histórico, auditoria")
+    ContainerDb(redis, "Redis", "Cache + Fila", "Cache + filas BullMQ")
+    ContainerDb(storage, "Object Storage", "S3 / MinIO", "Anexos")
+}
+
+Rel(user, spa, "Usa", "HTTPS")
+Rel(spa, api, "Chamadas de API", "REST/JSON")
+Rel(api, idp, "Autentica", "OIDC")
+Rel(api, pg, "Lê/escreve", "SQL (Prisma)")
+Rel(api, redis, "Cache + enfileira")
+Rel(worker, redis, "Consome filas")
+Rel(worker, pg, "Persiste")
+Rel(api, storage, "Anexos", "S3 API")
+Rel(whatsapp, api, "Intake", "webhook")
+Rel(worker, llm, "Classifica", "HTTPS")
+SHOW_LEGEND()
+@enduml

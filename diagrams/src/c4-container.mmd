@@ -1,0 +1,22 @@
+C4Container
+    title DevFlow - Containers
+    Person(user, "Usuário", "Solicitante / TI / Admin")
+    System_Ext(whatsapp, "WhatsApp API", "Meta")
+    System_Ext(llm, "LLM Provider", "IA")
+    Container_Boundary(devflow, "DevFlow") {
+        Container(spa, "Front-End", "Next.js 15")
+        Container(api, "API / BFF", "NestJS")
+        Container(worker, "Workers", "BullMQ")
+        ContainerDb(pg, "PostgreSQL 16", "RDBMS")
+        ContainerDb(redis, "Redis", "Cache + Fila")
+        ContainerDb(storage, "Object Storage", "S3")
+    }
+    Rel(user, spa, "HTTPS")
+    Rel(spa, api, "REST/JSON")
+    Rel(api, pg, "SQL")
+    Rel(api, redis, "cache/fila")
+    Rel(worker, redis, "consome")
+    Rel(worker, pg, "persiste")
+    Rel(api, storage, "anexos")
+    Rel(whatsapp, api, "webhook")
+    Rel(worker, llm, "classifica")

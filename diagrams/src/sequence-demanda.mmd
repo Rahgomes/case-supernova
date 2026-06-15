@@ -1,0 +1,15 @@
+sequenceDiagram
+    actor S as Solicitante
+    participant FE as Next.js
+    participant API as NestJS
+    participant DB as PostgreSQL
+    participant Q as Redis/BullMQ
+    participant W as Worker
+    S->>FE: Abre demanda
+    FE->>API: POST /demands (JWT)
+    API->>API: Valida (DTO) + autoriza (RBAC)
+    API->>DB: INSERT demanda + histórico (transação)
+    API->>Q: Enfileira "demanda.criada"
+    API-->>FE: 201 Created
+    Q->>W: Consome evento
+    W->>DB: Registra notificação

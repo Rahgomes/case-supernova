@@ -1,0 +1,8 @@
+flowchart TD
+    A[WAF / Rate limit] --> B[TLS 1.3 / HTTPS]
+    B --> C[AuthN: JWT + OIDC + MFA]
+    C --> D[AuthZ: RBAC + Guards + RLS]
+    D --> E[Validação de input / DTO]
+    E --> F[ORM parametrizado]
+    F --> G[Cripto em repouso AES-256]
+    G --> H[Auditoria append-only + LGPD]

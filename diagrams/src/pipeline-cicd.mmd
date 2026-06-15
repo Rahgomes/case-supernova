@@ -1,0 +1,19 @@
+flowchart TD
+    DEV[Dev: git push] --> PR[Pull Request]
+    PR --> L
+    subgraph CIB [Continuous Integration]
+        L[Lint + Type check] --> T[Testes unit + integração]
+        T --> COV[Cobertura 80pct+]
+        COV --> SAST[SAST - SonarQube]
+        SAST --> SCA[Scan dependências - Snyk]
+        SCA --> SEC[Scan secrets - Gitleaks]
+        SEC --> BUILD[Build Docker multi-stage]
+        BUILD --> IMG[Scan imagem - Trivy]
+    end
+    IMG -->|verde| MERGE[Merge develop]
+    MERGE --> CDH[Deploy Homologação]
+    CDH --> E2E[Testes E2E - Playwright]
+    E2E --> APPROVE{Aprovação + homologação}
+    APPROVE -->|aprova| CDP[Deploy Produção blue-green]
+    CDP --> POST[Health check + métricas]
+    POST -->|falha| RB[Rollback automático]

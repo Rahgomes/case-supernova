@@ -1,0 +1,39 @@
+erDiagram
+    DEPARTMENT ||--o{ USER : "tem"
+    ROLE ||--o{ USER_ROLE : "concede"
+    USER ||--o{ USER_ROLE : "possui"
+    USER ||--o{ DEMAND : "abre"
+    DEPARTMENT ||--o{ DEMAND : "origem"
+    DEMAND_CATEGORY ||--o{ DEMAND : "classifica"
+    STATUS ||--o{ DEMAND : "estado"
+    PRIORITY ||--o{ DEMAND : "prioridade"
+    DEMAND ||--o{ COMMENT : "recebe"
+    DEMAND ||--o{ ATTACHMENT : "anexa"
+    DEMAND ||--o{ DEMAND_HISTORY : "registra"
+    DEMAND ||--o| SLA : "rege"
+    SLA_POLICY ||--o{ SLA : "define"
+    AUDIT_LOG }o--|| USER : "acao de"
+    DEMAND {
+        uuid id PK
+        string titulo
+        uuid status_id FK
+        uuid priority_id FK
+        uuid solicitante_id FK
+        uuid responsavel_id FK
+    }
+    USER {
+        uuid id PK
+        string email UK
+        uuid department_id FK
+    }
+    SLA {
+        uuid id PK
+        timestamp inicio
+        string status_sla
+    }
+    AUDIT_LOG {
+        uuid id PK
+        string acao
+        string entidade
+        string ip
+    }

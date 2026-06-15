@@ -1,0 +1,7 @@
+flowchart LR
+    WA[WhatsApp Business API] -->|webhook| IN[Módulo Intake]
+    EM[E-mail] -->|parser| IN
+    IN -->|texto| LLM[LLM: classifica + prioriza]
+    LLM -->|categoria, depto, prioridade| DR[Rascunho de Demanda]
+    DR -->|cria| BL[(Backlog estruturado)]
+    BL --> TR[Triador valida/ajusta]
