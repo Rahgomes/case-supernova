@@ -5,17 +5,17 @@
 ```mermaid
 flowchart TD
     DEV[Dev: git push] --> PR[Pull Request]
-    PR --> CI{CI Pipeline}
-    subgraph CI [Continuous Integration]
+    PR --> L
+    subgraph CIB [Continuous Integration]
         L[Lint + Type check] --> T[Testes unit + integração]
-        T --> COV[Cobertura >= 80%]
+        T --> COV[Cobertura 80%+]
         COV --> SAST[SAST + Quality Gate - SonarQube]
         SAST --> SCA[Scan dependências - Snyk]
         SCA --> SEC[Scan secrets - Gitleaks]
         SEC --> BUILD[Build imagem Docker multi-stage]
         BUILD --> IMG[Scan imagem - Trivy]
     end
-    CI -->|verde| MERGE[Merge develop]
+    IMG -->|verde| MERGE[Merge develop]
     MERGE --> CDH[Deploy Homologação]
     CDH --> E2E[Testes E2E - Playwright]
     E2E --> SMOKE[Smoke tests + health check]
