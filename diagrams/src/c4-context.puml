@@ -10,7 +10,7 @@ System(devflow, "DevFlow", "Portal de Gestão de Demandas de TI")
 
 System_Ext(whatsapp, "WhatsApp Business API", "Intake de demandas")
 System_Ext(email, "Servidor de E-mail", "Intake e notificações")
-System_Ext(idp, "Identity Provider", "SSO OIDC")
+System_Ext(idp, "Keycloak", "IAM: SSO OIDC + RBAC")
 System_Ext(llm, "LLM Provider", "Classificação por IA")
 System_Ext(legado, "CRM / Legados (PHP)", "Integrações")
 

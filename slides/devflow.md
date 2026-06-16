@@ -54,9 +54,10 @@ Operações) abrem solicitações para TI e acompanham todo o ciclo — com gove
 | Front-end | **Next.js 16** (React, SSR/RSC) |
 | Back-end | **NestJS** — monólito modular por bounded context |
 | Dados | **PostgreSQL 16** + **Redis** (cache/fila) |
+| Identidade | **Keycloak** (IAM) — SSO OIDC + RBAC |
 | Assíncrono | **BullMQ** (notificações, SLA, intake) |
 | Inteligência | **WhatsApp Business API** + **LLM** (classifica/prioriza) |
-| Infra | **Docker** + **AWS** (região SP), CI/CD com **GitHub Actions** |
+| Infra | **Docker** + **AWS** (SP) · IaC **Terraform** · CI/CD **GitHub Actions** |
 
 ---
 
@@ -203,7 +204,7 @@ Controller fino · DTO valida na borda · DI (testável) · domínio rico · efe
 
 # 6. Segurança e LGPD
 
-- **AuthN:** JWT + Refresh + **SSO OIDC** + MFA para perfis privilegiados
+- **AuthN:** **Keycloak** (IAM) — SSO OIDC + MFA + JWT; identidade e papéis centralizados
 - **AuthZ:** RBAC com guards + Row-Level Security
 - **Cripto:** TLS 1.3 (trânsito) + AES-256 (repouso) + Argon2id (senhas)
 - **Auditoria:** trilha append-only e imutável

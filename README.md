@@ -31,9 +31,11 @@ ciclo de entrega, com governança e métricas.
 Front-end:  Next.js 16 (React, SSR/RSC)
 Back-end:   NestJS (Node/TypeScript) — monólito modular por bounded context
 Dados:      PostgreSQL 16  +  Redis (cache/fila)
+Identidade: Keycloak (IAM) — SSO OIDC + MFA + RBAC centralizado
 Assíncrono: BullMQ (notificações, SLA, intake)
 Inteligência: intake de demandas via WhatsApp Business API + classificação/priorização por LLM
-Infra:      Docker + AWS (região SP → dado no Brasil, LGPD), CI/CD com GitHub Actions + quality gates
+Infra:      Docker + AWS (região SP → dado no Brasil, LGPD); IaC Terraform
+CI/CD:      GitHub Actions + quality gates
 ```
 
 ## Diagrama de arquitetura (C4 — Contexto)
@@ -46,7 +48,7 @@ C4Context
     System(devflow, "DevFlow", "Portal de Gestão de Demandas de TI")
     System_Ext(whatsapp, "WhatsApp Business API", "Intake de demandas")
     System_Ext(llm, "LLM Provider", "Classificação por IA")
-    System_Ext(idp, "Identity Provider", "SSO OIDC")
+    System_Ext(idp, "Keycloak", "IAM: SSO OIDC + RBAC")
     Rel(solicitante, devflow, "Abre e acompanha demandas")
     Rel(timeTI, devflow, "Tria, executa e homologa")
     Rel(whatsapp, devflow, "Envia mensagens", "webhook")

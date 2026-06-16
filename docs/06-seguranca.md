@@ -5,7 +5,7 @@ Defesa em camadas cobrindo autenticação, autorização, criptografia, auditori
 ## Autenticação (AuthN)
 
 - **JWT** curto (15 min) + **refresh token** rotativo (httpOnly, secure).
-- **SSO corporativo via OIDC** (Google/Microsoft).
+- **SSO corporativo via OIDC**, provido pelo **Keycloak** (IAM open source) — emite o JWT, federa Google/Microsoft e centraliza MFA e papéis (RBAC). O NestJS valida o token e aplica os papéis nos guards.
 - Senha com hash **Argon2id**; política de complexidade.
 - **MFA** para perfis privilegiados (Admin, Aprovador).
 - **Rate limiting** + bloqueio progressivo (anti brute-force).

@@ -19,7 +19,7 @@ C4Context
     System(devflow, "DevFlow", "Portal de Gestão de Demandas de TI")
     System_Ext(whatsapp, "WhatsApp Business API", "Intake")
     System_Ext(email, "E-mail", "Intake e notificações")
-    System_Ext(idp, "Identity Provider", "SSO OIDC")
+    System_Ext(idp, "Keycloak", "IAM: SSO OIDC + RBAC")
     System_Ext(llm, "LLM Provider", "Classificação por IA")
     System_Ext(legado, "CRM / Legados (PHP)", "Integrações")
     Rel(solicitante, devflow, "Abre e acompanha")
@@ -88,10 +88,11 @@ microserviço — trocando a chamada in-process por mensageria.
 | DB principal | **PostgreSQL 16** | ACID no workflow; JSONB para flexibilidade; full-text nativo; RLS |
 | Cache + Fila | **Redis + BullMQ** | Cache de leitura; jobs assíncronos resilientes |
 | Object Storage | **S3 / MinIO** | Anexos fora do RDBMS; URLs pré-assinadas |
-| Auth | **JWT + Refresh + OIDC** | Stateless (escala horizontal); SSO corporativo |
+| Identidade & Auth | **Keycloak** (IAM) + JWT/OIDC | SSO, MFA e **RBAC centralizados** num IdP open source; NestJS valida o token e aplica os papéis nos guards. Stateless → escala horizontal |
 | IA | **LLM via API** | Classificação/priorização no intake |
 | Infra | **Docker + AWS** (região São Paulo) | Serviços gerenciados (RDS, ElastiCache, S3); dado no Brasil (LGPD); portável via Docker/12-factor (sem lock-in forte) |
 | CI/CD | **GitHub Actions** | Código no GitHub; alinhado à direção AI-native da Microsoft (Azure DevOps segue forte em enterprise) |
+| IaC | **Terraform** | Infra versionada e reproduzível; multi-cloud (sem lock-in). **Pulumi** como alternativa viável (IaC em TypeScript) |
 | ORM | **Prisma** | Type-safe, migrations versionadas |
 
 ## Fluxo de criação de demanda
@@ -145,6 +146,14 @@ mensagem, classifica e cria a demanda já priorizada no backlog.
 - **Decisão:** Notificações, SLA e IA em workers via BullMQ/Redis.
 - **Porquê:** Não bloquear o request; resiliência (retry); desacoplamento.
 
-### ADR-004 — Auth stateless (JWT) + SSO OIDC
-- **Decisão:** JWT curto + refresh + SSO corporativo.
-- **Porquê:** Escala horizontal sem sessão pegajosa; reaproveita identidade corporativa.
+### ADR-004 — Keycloak (IAM) + Auth stateless (JWT/OIDC)
+- **Decisão:** Keycloak como Identity Provider (SSO OIDC, MFA, RBAC centralizado); JWT curto + refresh; NestJS valida o token e aplica papéis nos guards (CASL para autorização fina).
+- **Alternativa rejeitada:** Implementar autenticação do zero — área crítica e propensa a falha, sem ganho.
+- **Porquê:** Não reinventar auth; centralizar identidade e papéis; stateless escala horizontal.
+
+### ADR-005 — CI/CD em GitHub Actions e IaC em Terraform
+- **Contexto:** Código no GitHub; infra na AWS.
+- **Decisão:** **GitHub Actions** para CI/CD; **Terraform** para IaC.
+- **Alternativas:** AWS CodePipeline/CodeBuild (rejeitado: pior DX, mais acoplado — a própria AWS fechou o CodeCommit para novos clientes em 2024); CloudFormation/CDK (rejeitado: lock-in AWS); **Pulumi** (IaC em TypeScript) — mantido como alternativa, não padrão, para não fragmentar a stack de IaC.
+- **Porquê:** Actions integra nativo ao repositório (gates no PR) e faz deploy na AWS via OIDC; Terraform é padrão de mercado e multi-cloud, coerente com evitar lock-in.
+- **Nota:** se a empresa usa Azure DevOps/GitLab, a esteira se adapta — mudam as ferramentas, não os princípios (gates, IaC, rollback).
