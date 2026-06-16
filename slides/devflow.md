@@ -10,8 +10,9 @@ style: |
   section.lead h1 { font-size: 54px; }
   table { font-size: 21px; }
   code { font-size: 19px; }
+  header { font-size: 15px; letter-spacing: 2px; text-transform: uppercase; color: #9a86b8; font-weight: 600; }
   /* Slides de diagrama: imagem limitada pela ALTURA, nunca vaza */
-  section.diag { display: flex; flex-direction: column; padding: 30px 46px 24px; }
+  section.diag { display: flex; flex-direction: column; padding: 54px 46px 24px; }
   section.diag h1 { font-size: 30px; margin: 0 0 6px; }
   section.diag p { flex: 1 1 auto; min-height: 0; margin: 0; display: flex; align-items: center; justify-content: center; }
   section.diag img { max-height: 100%; max-width: 100%; }
@@ -61,6 +62,8 @@ Operações) abrem solicitações para TI e acompanham todo o ciclo — com gove
 
 ---
 
+<!-- _header: 'Requisitos' -->
+
 # 1. Requisitos funcionais — o que o sistema faz
 
 | Área | Requisitos |
@@ -73,6 +76,8 @@ Operações) abrem solicitações para TI e acompanham todo o ciclo — com gove
 | Gestão | dashboard, relatórios, trilha de auditoria |
 
 ---
+
+<!-- _header: 'Requisitos' -->
 
 # 1. Requisitos não funcionais — como se comporta
 
@@ -88,6 +93,8 @@ Operações) abrem solicitações para TI e acompanham todo o ciclo — com gove
 
 ---
 
+<!-- _header: 'Arquitetura' -->
+
 # 2. Arquitetura — princípios
 
 1. **Monólito modular** agora; microserviço quando o domínio exigir
@@ -99,6 +106,8 @@ Operações) abrem solicitações para TI e acompanham todo o ciclo — com gove
 
 <!-- _class: diag -->
 
+<!-- _header: 'Arquitetura' -->
+
 # 2. C4 — Contexto
 
 ![](../diagrams/img/c4-context.png)
@@ -107,11 +116,15 @@ Operações) abrem solicitações para TI e acompanham todo o ciclo — com gove
 
 <!-- _class: diag -->
 
+<!-- _header: 'Arquitetura' -->
+
 # 2. C4 — Container
 
 ![](../diagrams/img/c4-container.png)
 
 ---
+
+<!-- _header: 'Arquitetura' -->
 
 # 2. Módulos (bounded contexts)
 
@@ -129,11 +142,15 @@ Cada módulo é isolado e comunica-se por interfaces/eventos. Um módulo que pre
 
 <!-- _class: diag -->
 
+<!-- _header: 'Arquitetura' -->
+
 # 2. Intake inteligente
 
 ![](../diagrams/img/intake.png)
 
 ---
+
+<!-- _header: 'Arquitetura' -->
 
 # 2. Decisões registradas (ADRs)
 
@@ -146,11 +163,15 @@ Cada módulo é isolado e comunica-se por interfaces/eventos. Um módulo que pre
 
 <!-- _class: diag -->
 
+<!-- _header: 'Modelagem de Dados' -->
+
 # 3. Modelo de dados
 
 ![](../diagrams/img/er-model.png)
 
 ---
+
+<!-- _header: 'Modelagem de Dados' -->
 
 # 3. Histórico e auditoria
 
@@ -166,11 +187,15 @@ JSONB para flexibilidade, anexos em S3, outbox para consistência de eventos.
 
 <!-- _class: diag -->
 
+<!-- _header: 'Governança' -->
+
 # 4. Governança — GitFlow
 
 ![](../diagrams/img/gitflow.png)
 
 ---
+
+<!-- _header: 'Governança' -->
 
 # 4. Qualidade como gate
 
@@ -190,6 +215,8 @@ Controller fino · DTO valida na borda · DI (testável) · domínio rico · efe
 
 <!-- _class: diag -->
 
+<!-- _header: 'DevOps & CI/CD' -->
+
 # 5. DevOps — esteira CI/CD
 
 ![](../diagrams/img/pipeline-slide.png)
@@ -198,11 +225,15 @@ Controller fino · DTO valida na borda · DI (testável) · domínio rico · efe
 
 <!-- _class: diag -->
 
+<!-- _header: 'Segurança' -->
+
 # 6. Segurança em camadas
 
 ![](../diagrams/img/seguranca-slide.png)
 
 ---
+
+<!-- _header: 'Segurança' -->
 
 # 6. Segurança e LGPD
 
@@ -216,6 +247,8 @@ Controller fino · DTO valida na borda · DI (testável) · domínio rico · efe
 
 <!-- _class: diag -->
 
+<!-- _header: 'Escalabilidade & Evolução' -->
+
 # 7. Escalabilidade — por estágios
 
 ![](../diagrams/img/escala.png)
@@ -223,6 +256,8 @@ Controller fino · DTO valida na borda · DI (testável) · domínio rico · efe
 ---
 
 <!-- _class: diag -->
+
+<!-- _header: 'Escalabilidade & Evolução' -->
 
 # 7. Roadmap evolutivo
 
