@@ -78,6 +78,42 @@ Cada módulo é um bounded context isolado, comunicando-se por interfaces/evento
 precise escalar sozinho (ex.: `intake`, `notifications`) já está pronto para ser extraído como
 microserviço — trocando a chamada in-process por mensageria.
 
+### Front-end — Next.js (App Router), feature-based
+
+```
+src/
+├── app/                 # rotas (App Router, React Server Components)
+│   ├── demandas/  backlog/  dashboard/
+│   └── (auth)/          # login via Keycloak
+├── features/            # lógica por domínio: demands, sla, intake...
+│   └── <feature>/       # components, hooks, api/, types
+├── components/ui/       # design system compartilhado
+└── lib/                 # api client, auth, utils
+```
+
+O back organiza por **bounded context**; o front por **feature** (cada domínio isola seus componentes,
+hooks e chamadas de API). A simetria mantém a mesma linguagem de domínio nas duas pontas.
+
+## Infraestrutura (deployment na AWS)
+
+```mermaid
+flowchart LR
+    U[Usuários] --> CF[CloudFront CDN]
+    CF --> ALB[Application Load Balancer]
+    subgraph AWS [AWS - região São Paulo]
+        ALB --> ECS[ECS / Fargate<br/>API + Workers - N instâncias]
+        ECS --> RDS[(RDS PostgreSQL<br/>Multi-AZ + réplica)]
+        ECS --> EC[(ElastiCache Redis)]
+        ECS --> S3[(S3 - anexos)]
+    end
+    GH[GitHub Actions] -. deploy via OIDC .-> ECS
+    TF[Terraform] -. provisiona .-> AWS
+```
+
+Aplicação **stateless** em containers (ECS/Fargate) atrás de um load balancer → escala horizontal.
+Banco gerenciado (RDS Multi-AZ + réplica de leitura), cache (ElastiCache) e anexos (S3), tudo na
+**região São Paulo** (dado no Brasil → LGPD). **Terraform** provisiona; **GitHub Actions** implanta via OIDC.
+
 ## Stack e justificativas
 
 | Camada | Escolha | Justificativa |

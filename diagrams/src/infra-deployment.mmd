@@ -1,0 +1,11 @@
+flowchart LR
+    U[Usuários] --> CF[CloudFront<br/>CDN]
+    CF --> ALB[Application<br/>Load Balancer]
+    subgraph AWS [AWS - região São Paulo]
+        ALB --> ECS[ECS / Fargate<br/>API + Workers<br/>N instâncias]
+        ECS --> RDS[(RDS PostgreSQL<br/>Multi-AZ + réplica)]
+        ECS --> EC[(ElastiCache<br/>Redis)]
+        ECS --> S3[(S3<br/>anexos)]
+    end
+    GH[GitHub Actions] -. deploy via OIDC .-> ECS
+    TF[Terraform] -. provisiona .-> AWS

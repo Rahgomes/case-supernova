@@ -2,6 +2,7 @@
 marp: true
 theme: gaia
 paginate: true
+html: true
 backgroundColor: #fff
 color: #1a1a2e
 style: |
@@ -16,6 +17,11 @@ style: |
   section.diag h1 { font-size: 30px; margin: 0 0 6px; }
   section.diag p { flex: 1 1 auto; min-height: 0; margin: 0; display: flex; align-items: center; justify-content: center; }
   section.diag img { max-height: 100%; max-width: 100%; }
+  section.twocol .cols { display: flex; gap: 28px; }
+  section.twocol .cols > div { flex: 1; min-width: 0; }
+  section.twocol pre { font-size: 13px; line-height: 1.35; }
+  section.twocol h1 { font-size: 30px; }
+  section.twocol p { font-size: 17px; }
   footer { color: #999; }
 footer: "DevFlow — Portal de Gestão de Demandas de TI"
 ---
@@ -124,19 +130,57 @@ Operações) abrem solicitações para TI e acompanham todo o ciclo — com gove
 
 ---
 
+<!-- _class: diag -->
 <!-- _header: 'Arquitetura' -->
 
-# 2. Módulos (bounded contexts)
+# 2. Infraestrutura — deployment na AWS
+
+![](../diagrams/img/infra-deployment.png)
+
+---
+
+<!-- _class: twocol -->
+<!-- _header: 'Arquitetura' -->
+
+# 2. Organização do código
+
+<div class="cols">
+<div>
+
+**Back-end** — NestJS · por *bounded context*
 
 ```
 src/modules/
-├── identity/    demands/    comments/
-├── attachments/ sla/        notifications/
-└── audit/       intake/     reports/
+├── identity/   demands/
+├── comments/   attachments/
+├── sla/        notifications/
+├── audit/      intake/
+└── reports/
 ```
 
-Cada módulo é isolado e comunica-se por interfaces/eventos. Um módulo que precise escalar sozinho
-(ex.: `intake`, `notifications`) **já está pronto para virar microserviço** — sem reescrita.
+Módulos isolados → microserviço **sem reescrita**.
+
+</div>
+<div>
+
+**Front-end** — Next.js (App Router) · *feature-based*
+
+```
+src/
+├── app/         # rotas (RSC)
+│   ├── demandas/  backlog/
+│   └── dashboard/
+├── features/    # demands, sla,
+│   │            #  intake...
+│   └── (components, hooks, api)
+├── components/ui/  # design system
+└── lib/         # api, auth, utils
+```
+
+Cada feature isola componentes, hooks e API.
+
+</div>
+</div>
 
 ---
 

@@ -1,30 +1,34 @@
 # Diagramas
 
-Fontes versionadas em [`src/`](src/) e imagens renderizadas em [`img/`](img/).
+Todos os diagramas são **Mermaid** (renderizam nativo no GitHub dentro dos `../docs/`). Fontes em
+[`src/`](src/) e imagens renderizadas em [`img/`](img/) (SVG + PNG, usadas na apresentação).
 
-| Diagrama | Tipo | Fonte | Imagem |
-|---|---|---|---|
-| C4 — Contexto | PlantUML (C4) | `src/c4-context.puml` | `img/c4-context.svg` |
-| C4 — Container | Mermaid (C4) | `src/c4-container.mmd` · `src/c4-container.puml` | `img/c4-container.svg` |
-| Modelo de dados (ER) | Mermaid | `src/er-model.mmd` | `img/er-model.svg` |
-| Sequência — criação de demanda | Mermaid | `src/sequence-demanda.mmd` | `img/sequence-demanda.svg` |
-| Intake inteligente | Mermaid | `src/intake.mmd` | `img/intake.svg` |
-| Esteira CI/CD | Mermaid | `src/pipeline-cicd.mmd` | `img/pipeline-cicd.svg` |
-| GitFlow | Mermaid | `src/gitflow.mmd` | `img/gitflow.svg` |
-| Escalabilidade | Mermaid | `src/escala.mmd` | `img/escala.svg` |
-| Roadmap | Mermaid | `src/roadmap.mmd` | `img/roadmap.svg` |
-| Segurança em camadas | Mermaid | `src/seguranca-camadas.mmd` | `img/seguranca-camadas.svg` |
+| Diagrama | Fonte | Uso |
+|---|---|---|
+| C4 — Contexto | `src/c4-context.mmd` | docs + slide |
+| C4 — Container | `src/c4-container.mmd` | docs + slide |
+| Infraestrutura (deployment AWS) | `src/infra-deployment.mmd` | docs + slide |
+| Modelo de dados (ER) | `src/er-model.mmd` | docs + slide |
+| Sequência — criação de demanda | `src/sequence-demanda.mmd` | docs |
+| Intake inteligente | `src/intake.mmd` | docs + slide |
+| Esteira CI/CD (detalhada) | `src/pipeline-cicd.mmd` | docs |
+| Esteira CI/CD (slide, horizontal) | `src/pipeline-slide.mmd` | slide |
+| GitFlow | `src/gitflow.mmd` | docs + slide |
+| Escalabilidade | `src/escala.mmd` | docs + slide |
+| Roadmap | `src/roadmap.mmd` | docs + slide |
+| Segurança em camadas (detalhada) | `src/seguranca-camadas.mmd` | docs |
+| Segurança em camadas (slide, horizontal) | `src/seguranca-slide.mmd` | slide |
 
-> Os diagramas Mermaid também renderizam **nativamente no GitHub** dentro dos documentos em [`../docs/`](../docs/).
-> As imagens em `img/` (SVG e PNG) são usadas na apresentação.
+> Padrão único: **Mermaid**. Versões `-slide` são variações horizontais otimizadas para caber em 16:9.
 
 ## Como (re)renderizar
 
-As imagens foram geradas via [Kroki](https://kroki.io). Exemplo:
+Imagens geradas via [Kroki](https://kroki.io):
 
 ```bash
-curl -s -X POST https://kroki.io/mermaid/svg --data-binary @src/intake.mmd -o img/intake.svg
-curl -s -X POST https://kroki.io/plantuml/svg --data-binary @src/c4-context.puml -o img/c4-context.svg
+for f in src/*.mmd; do
+  n=$(basename "$f" .mmd)
+  curl -s -X POST https://kroki.io/mermaid/svg --data-binary @"$f" -o "img/$n.svg"
+  curl -s -X POST https://kroki.io/mermaid/png --data-binary @"$f" -o "img/$n.png"
+done
 ```
-
-Os arquivos `.puml` (C4) também renderizam localmente com PlantUML: `java -jar plantuml.jar src/c4-context.puml`.
