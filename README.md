@@ -74,6 +74,6 @@ C4Context
 .
 ├── README.md
 ├── docs/          # documentação técnica por dimensão
-├── diagrams/      # fontes (.mmd/.puml) e imagens renderizadas
+├── diagrams/      # fontes Mermaid (.mmd) e imagens renderizadas (SVG/PNG)
 └── slides/        # apresentação (Marp): fonte .md + .pptx + .pdf
 ```
