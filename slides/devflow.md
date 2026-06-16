@@ -51,12 +51,12 @@ Operações) abrem solicitações para TI e acompanham todo o ciclo — com gove
 
 | Camada | Escolha |
 |---|---|
-| Front-end | **Next.js 15** (React, SSR/RSC) |
+| Front-end | **Next.js 16** (React, SSR/RSC) |
 | Back-end | **NestJS** — monólito modular por bounded context |
 | Dados | **PostgreSQL 16** + **Redis** (cache/fila) |
 | Assíncrono | **BullMQ** (notificações, SLA, intake) |
 | Inteligência | **WhatsApp Business API** + **LLM** (classifica/prioriza) |
-| Infra | **Docker**, cloud, CI/CD com quality gates |
+| Infra | **Docker** + **AWS** (região SP), CI/CD com **GitHub Actions** |
 
 ---
 

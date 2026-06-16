@@ -8,7 +8,7 @@ System_Ext(llm, "LLM Provider", "IA")
 System_Ext(idp, "Identity Provider", "OIDC")
 
 System_Boundary(devflow, "DevFlow") {
-    Container(spa, "Front-End", "Next.js 15 / React", "UI SSR + RSC, responsiva")
+    Container(spa, "Front-End", "Next.js 16 / React", "UI SSR + RSC, responsiva")
     Container(api, "API / BFF", "NestJS (Node/TS)", "Monólito modular por bounded context")
     Container(worker, "Workers", "NestJS + BullMQ", "Notificações, SLA, intake IA")
     ContainerDb(pg, "PostgreSQL 16", "RDBMS", "Demandas, usuários, histórico, auditoria")

@@ -28,12 +28,12 @@ ciclo de entrega, com governança e métricas.
 ## Stack
 
 ```
-Front-end:  Next.js 15 (React, SSR/RSC)
+Front-end:  Next.js 16 (React, SSR/RSC)
 Back-end:   NestJS (Node/TypeScript) — monólito modular por bounded context
 Dados:      PostgreSQL 16  +  Redis (cache/fila)
 Assíncrono: BullMQ (notificações, SLA, intake)
 Inteligência: intake de demandas via WhatsApp Business API + classificação/priorização por LLM
-Infra:      Docker, cloud (AWS/GCP), CI/CD com quality gates
+Infra:      Docker + AWS (região SP → dado no Brasil, LGPD), CI/CD com GitHub Actions + quality gates
 ```
 
 ## Diagrama de arquitetura (C4 — Contexto)

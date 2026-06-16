@@ -41,7 +41,7 @@ C4Container
     System_Ext(whatsapp, "WhatsApp Business API", "Meta")
     System_Ext(llm, "LLM Provider", "IA")
     Container_Boundary(devflow, "DevFlow") {
-        Container(spa, "Front-End", "Next.js 15 / React", "UI SSR + RSC")
+        Container(spa, "Front-End", "Next.js 16 / React", "UI SSR + RSC")
         Container(api, "API / BFF", "NestJS", "Monólito modular por bounded context")
         Container(worker, "Workers", "NestJS + BullMQ", "Notificações, SLA, intake IA")
         ContainerDb(pg, "PostgreSQL 16", "RDBMS", "Demandas, usuários, auditoria, histórico")
@@ -82,7 +82,7 @@ microserviço — trocando a chamada in-process por mensageria.
 
 | Camada | Escolha | Justificativa |
 |---|---|---|
-| Front-end | **Next.js 15 (React)** | SSR/RSC para performance e SEO; App Router; mobile-first |
+| Front-end | **Next.js 16 (React)** | SSR/RSC para performance e segurança (menos JS no cliente, dados no servidor); App Router; mobile-first |
 | Back-end | **NestJS (Node/TS)** | Modular nativo (DI) → DDD tático; TypeScript ponta a ponta |
 | API | **REST/JSON + OpenAPI** | Contrato e documentação automática |
 | DB principal | **PostgreSQL 16** | ACID no workflow; JSONB para flexibilidade; full-text nativo; RLS |
@@ -90,7 +90,8 @@ microserviço — trocando a chamada in-process por mensageria.
 | Object Storage | **S3 / MinIO** | Anexos fora do RDBMS; URLs pré-assinadas |
 | Auth | **JWT + Refresh + OIDC** | Stateless (escala horizontal); SSO corporativo |
 | IA | **LLM via API** | Classificação/priorização no intake |
-| Infra | **Docker + cloud** | Paridade dev/prod, portabilidade |
+| Infra | **Docker + AWS** (região São Paulo) | Serviços gerenciados (RDS, ElastiCache, S3); dado no Brasil (LGPD); portável via Docker/12-factor (sem lock-in forte) |
+| CI/CD | **GitHub Actions** | Código no GitHub; alinhado à direção AI-native da Microsoft (Azure DevOps segue forte em enterprise) |
 | ORM | **Prisma** | Type-safe, migrations versionadas |
 
 ## Fluxo de criação de demanda
