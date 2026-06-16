@@ -61,18 +61,20 @@ Operações) abrem solicitações para TI e acompanham todo o ciclo — com gove
 
 ---
 
-# 1. Requisitos funcionais
+# 1. Requisitos funcionais — o que o sistema faz
 
-- **Identidade:** usuários, departamentos, perfis (**RBAC**), SSO
-- **Demanda:** abertura, **workflow configurável**, **backlog**, **priorização** (impacto × urgência)
-- **Colaboração:** comentários, anexos, **histórico/timeline**
-- **SLA:** política por prioridade, alerta de risco, violação
-- **Intake inteligente:** WhatsApp + IA, e-mail
-- **Gestão:** dashboard, relatórios, **trilha de auditoria**
+| Área | Requisitos |
+|---|---|
+| Identidade | usuários, departamentos, perfis (RBAC), SSO via Keycloak |
+| Demanda | abertura, workflow configurável, backlog, priorização (impacto × urgência) |
+| Colaboração | comentários, anexos, histórico/timeline |
+| SLA | política por prioridade, alerta de risco, violação |
+| Intake | captura via WhatsApp + IA e e-mail |
+| Gestão | dashboard, relatórios, trilha de auditoria |
 
 ---
 
-# 1. Requisitos não funcionais
+# 1. Requisitos não funcionais — como se comporta
 
 | Categoria | Alvo |
 |---|---|
